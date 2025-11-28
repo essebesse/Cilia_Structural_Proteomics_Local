@@ -68,6 +68,10 @@ RRP7A_*.txt
 # Database backups (too large for git)
 database_backups/
 
+# IMPORTANT: Include protoview.db for local deployment
+# This is the pre-populated SQLite database
+!protoview.db
+
 # Build artifacts
 tsconfig.tsbuildinfo
 
