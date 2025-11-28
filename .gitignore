@@ -72,6 +72,14 @@ database_backups/
 # This is the pre-populated SQLite database
 !protoview.db
 
+# Structure files (CIF files - too large for git, ~800MB)
+# Provide these separately to implementer
+structures/*.cif
+
+# But DO include the manifest and README
+!cif_manifest.json
+!structures/README.md
+
 # Build artifacts
 tsconfig.tsbuildinfo
 
