@@ -107,9 +107,11 @@ node db/check_db.mjs
 
 ## Documentation
 
-- **Implementation Plan**: `/u/au14762/.claude/plans/serene-honking-zebra.md`
-- **Cloud Version Docs**: See original repository for workflow guides
-- **Local Docs** (to be created):
+- **IMPLEMENTATION_PLAN.md** - Complete 7-phase SQLite migration plan
+- **DATABASE_INFO.md** - Database schema and statistics
+- **MOLSTAR_IMPLEMENTATION_GUIDE.md** - 3D structure viewer guide (optional feature, 3-5 hours)
+- **Cloud Version Docs**: See parent repository for workflow guides
+- **Local Docs** (to be created by implementer):
   - `docs/LOCAL_DEPLOYMENT.md` - Complete setup guide
   - `docs/LOCAL_IMPORT_GUIDE.md` - Import workflow
   - `docs/SQLITE_SCHEMA.md` - Database schema reference
