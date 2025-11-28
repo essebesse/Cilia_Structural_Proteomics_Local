@@ -20,23 +20,28 @@ This is a standalone version of Protoview designed for local deployment. It uses
 
 ## Implementation Status
 
-**STATUS: PLANNED - NOT YET IMPLEMENTED**
+**STATUS: PLANNED - DATABASE READY**
 
-This repository contains the copied codebase from the cloud version. The SQLite migration has NOT been implemented yet.
+This repository contains:
+- ✅ Codebase copied from cloud version
+- ✅ **Pre-populated SQLite database** (`protoview.db` - 1.89 MB)
+- ❌ Code migration NOT yet implemented (still uses PostgreSQL syntax)
 
-**Implementation Plan**: See `/u/au14762/.claude/plans/serene-honking-zebra.md` for complete implementation details.
+The database is ready and contains all production data. The IT person needs to implement the code migration (see IMPLEMENTATION_PLAN.md).
 
-## Planned Implementation (7 Phases)
+**Implementation Plan**: See `IMPLEMENTATION_PLAN.md` for complete implementation details.
+
+## Planned Implementation (6 Remaining Phases)
 
 1. **Setup SQLite** - Replace @vercel/postgres with better-sqlite3
-2. **Database Schema** - Convert PostgreSQL schema to SQLite
+2. **Database Schema** - Convert PostgreSQL schema to SQLite (✅ Schema in protoview.db)
 3. **Update API Routes** - Modify 5 API route files
 4. **Update Import Scripts** - Modify 37 import scripts
-5. **Pre-populate Database** - Export current data to SQLite
+5. ~~**Pre-populate Database**~~ - ✅ **DONE** (protoview.db included)
 6. **Documentation** - Installation and import guides
 7. **Testing** - Verify all functionality
 
-**Estimated Effort**: 15-21 hours
+**Estimated Effort**: 13-18 hours (reduced from 15-21 hours)
 
 ## Prerequisites (for IT Implementation)
 
@@ -77,11 +82,16 @@ npm run dev
 
 ## Database
 
-- **SQLite** (single file: `protoview.db`)
-- Pre-populated with current production data
-- ~1,339 proteins across multiple organisms
-- ~2,267 interactions (AF2 + AF3)
-- ~7,597 protein aliases for comprehensive search
+✅ **Pre-populated SQLite database included!**
+
+- **File**: `protoview.db` (1.89 MB)
+- **1,808 proteins** across multiple organisms
+- **2,754 interactions** (AF2 + AF3, v3 + v4 data)
+- **7,612 protein aliases** for comprehensive search
+- **3 protein complexes** with 57 complex interactions
+- **17 experimentally validated** interactions (MS pulldown)
+
+See `DATABASE_INFO.md` for complete details.
 
 ## Data Import (After Implementation)
 
