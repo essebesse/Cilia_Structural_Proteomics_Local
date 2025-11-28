@@ -1,0 +1,58 @@
+{
+  "timestamp": "2025-10-23T09:04:29.933Z",
+  "total_interactions": 983,
+  "v4_coverage_pct": "30.8",
+  "v4_excluded_count": 0,
+  "distributions": {
+    "v3": {
+      "High": 235,
+      "Medium": 340,
+      "Low": 408
+    },
+    "v4": {
+      "High": 43,
+      "Medium": 247,
+      "Low": 693,
+      "Very Low": 0
+    }
+  },
+  "concordance": {
+    "overall_agreement_pct": "50.4",
+    "by_v3_tier": {
+      "high": "18.3",
+      "medium": 81,
+      "low": 371
+    }
+  },
+  "top_hits": {
+    "v3_high_count": 235,
+    "v4_high_count": 43,
+    "shared_high_count": 43,
+    "v3_high_capture_pct": "18.3",
+    "v4_high_capture_pct": "100.0"
+  },
+  "protein_size_impact": {
+    "large_proteins": {
+      "count": 114,
+      "agreement_pct": "54.4"
+    },
+    "normal_proteins": {
+      "count": 869,
+      "agreement_pct": "49.8"
+    }
+  },
+  "transition_matrix": {
+    "High->High": 43,
+    "High->Medium": 129,
+    "High->Low": 63,
+    "High->Very Low": 0,
+    "Medium->High": 0,
+    "Medium->Medium": 81,
+    "Medium->Low": 259,
+    "Medium->Very Low": 0,
+    "Low->High": 0,
+    "Low->Medium": 37,
+    "Low->Low": 371,
+    "Low->Very Low": 0
+  }
+}
