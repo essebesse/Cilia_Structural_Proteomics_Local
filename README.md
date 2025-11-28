@@ -27,7 +27,7 @@ This repository contains:
 - ✅ **Pre-populated SQLite database** (`protoview.db` - 1.89 MB)
 - ❌ Code migration NOT yet implemented (still uses PostgreSQL syntax)
 
-The database is ready and contains all production data. The IT person needs to implement the code migration (see IMPLEMENTATION_PLAN.md).
+The database is ready and contains all production data. The implementer needs to implement the code migration (see IMPLEMENTATION_PLAN.md).
 
 **Implementation Plan**: See `IMPLEMENTATION_PLAN.md` for complete implementation details.
 
@@ -137,7 +137,7 @@ node db/check_db.mjs
 - `app/api/**/*.ts` - 5 API routes
 - `db/*.mjs` - 37 import scripts
 
-## For IT Person: Implementation Guide
+## For the implementer Person: Implementation Guide
 
 1. **Read the Plan**: Start with `/u/au14762/.claude/plans/serene-honking-zebra.md`
 2. **Follow Phases 1-7**: Step-by-step implementation instructions

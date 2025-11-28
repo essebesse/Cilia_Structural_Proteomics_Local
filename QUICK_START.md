@@ -1,4 +1,4 @@
-# Quick Start Guide for IT Person
+# Quick Start Guide for Implementer
 
 **Project**: Protoview Local Deployment
 **Status**: Ready for implementation

@@ -1,7 +1,7 @@
 # IT Handoff Guide - Local Deployment Implementation
 
 **Created**: 2025-11-28
-**For**: IT person implementing local deployment of Protoview
+**For**: implementer implementing local deployment of Protoview
 **Estimated Time**: 15-21 hours of development work
 
 ## Quick Overview

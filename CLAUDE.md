@@ -119,7 +119,7 @@ experimental_validation TEXT
 // Store: JSON.stringify(validationData)
 ```
 
-## For IT Person Implementing This
+## For the Implementer
 
 1. **Start here**: Read `IMPLEMENTATION_PLAN.md` thoroughly
 2. **Phase-by-phase**: Follow the 7 phases in order

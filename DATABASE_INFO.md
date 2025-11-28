@@ -144,7 +144,7 @@ WHERE bait_protein_id = (SELECT id FROM proteins WHERE uniprot_id = 'Q8NEZ3')
    OR prey_protein_id = (SELECT id FROM proteins WHERE uniprot_id = 'Q8NEZ3');
 ```
 
-## Notes for IT Person
+## Notes for Implementer
 
 - This database is **ready to use** - no setup required
 - Indexes are already created for search performance
