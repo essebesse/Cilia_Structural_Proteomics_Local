@@ -1,9 +1,9 @@
 # Structure Files Directory
 
-**Generated**: 2025-11-28
-**Total Files**: 1,069 CIF files
-**Total Size**: 799.66 MB (0.78 GB)
-**Coverage**: 45.4% of AF3 interactions in database
+**Generated**: 2025-11-29
+**Total Files**: 2,211 unique CIF files
+**Total Size**: 1.7 GB
+**Coverage**: 96.0% of AF3 interactions in database (2,263/2,357)
 
 ## Contents
 
@@ -57,26 +57,27 @@ CIF files were extracted from AlphaFold Pulldown predictions:
 ## Coverage Statistics
 
 - **Total AF3 interactions in database**: 2,357
-- **Found CIF files**: 1,069 (45.4%)
-- **Missing CIF files**: 1,288 (54.6%)
+- **CIF files available**: 2,263 (96.0%)
+- **Unique CIF files**: 2,211 (some interactions share the same bait-prey pair)
+- **Missing CIF files**: 94 (4.0%)
 - **Errors**: 0
 
 ### Why Some Files Are Missing
 
-CIF files may be missing for several reasons:
-1. Prediction directory not found in AlphaPulldown structure
-2. Different directory naming convention used
-3. Prediction was run but CIF file not generated
-4. Source data path in database incorrect
+Only 94 CIF files (4%) could not be found:
+1. Prediction directory not in expected AlphaPulldown locations
+2. Prediction failed or was incomplete
+3. Source path in database points to non-existent location
+4. Different file naming convention used
 
 ## Git Status
 
-**NOT included in git repository** (too large - 800 MB)
+**NOT included in git repository** (too large - 1.7 GB)
 
 The structures directory is listed in `.gitignore`. Instead:
 - ✅ Manifest file (`cif_manifest.json`) IS included in git
 - ✅ Collection script IS included in git
-- ❌ CIF files themselves are NOT in git
+- ❌ CIF files themselves are NOT in git (too large for GitHub)
 
 ## Distribution
 
@@ -92,7 +93,7 @@ cp -r structures/ /path/to/implementer/location/
 ```bash
 # Create compressed archive
 tar -czf structures.tar.gz structures/
-# Size: ~200-300 MB compressed
+# Original size: 1.7 GB → Compressed: ~500-700 MB
 
 # Extract on implementer's machine
 tar -xzf structures.tar.gz
@@ -146,18 +147,15 @@ To verify files after copying:
 ```bash
 # Count files
 ls structures/*.cif | wc -l
-# Should be: 1069
+# Should be: 2211
 
 # Check total size
 du -sh structures/
-# Should be: ~800M
+# Should be: 1.7G
 
 # Verify manifest matches
-node -e "
-const manifest = require('./cif_manifest.json');
-console.log('Manifest says:', manifest.found, 'files');
-console.log('Directory has:', require('fs').readdirSync('structures').filter(f => f.endsWith('.cif')).length, 'files');
-"
+cat cif_manifest.json | grep -E '"total"|"found"|"not_found"'
+# Expected: "found": 2263 (manifest tracks 2263 interactions → 2211 unique files)
 ```
 
 ## Troubleshooting
@@ -186,6 +184,7 @@ console.log('Directory has:', require('fs').readdirSync('structures').filter(f =
 
 ---
 
-**Last Updated**: 2025-11-28
+**Last Updated**: 2025-11-29
 **Script**: `scripts/collect_cif_files.mjs`
 **Source**: AlphaPulldown AF3 predictions
+**Collection time**: ~2-3 minutes for 2,357 interactions

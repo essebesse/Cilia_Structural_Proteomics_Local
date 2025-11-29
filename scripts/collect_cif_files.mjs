@@ -29,27 +29,6 @@ const DB_PATH = join(dirname(__dirname), 'protoview.db');
 const STRUCTURES_DIR = join(dirname(__dirname), 'structures');
 const MANIFEST_PATH = join(dirname(__dirname), 'cif_manifest.json');
 
-// Base directory for AlphaPulldown predictions
-const AF3_BASE_DIR = '/emcc/au14762/elo_lab/AlphaPulldown/AF3_APD';
-
-/**
- * Extract interaction directory name from source_path
- */
-function extractDirectoryFromSourcePath(sourcePath) {
-  if (!sourcePath) return null;
-
-  // Split by forward slash
-  const parts = sourcePath.split('/');
-
-  // Look for pattern: lowercase_and_lowercase (interaction directory)
-  for (const part of parts) {
-    if (part.includes('_and_') && part === part.toLowerCase()) {
-      return part.split('/')[0];
-    }
-  }
-
-  return null;
-}
 
 /**
  * Check if a file exists
@@ -64,63 +43,74 @@ async function fileExists(filePath) {
 }
 
 /**
- * Find CIF file in AlphaPulldown directory structure
+ * Find CIF file using the source_path directly from database
  */
 async function findCifFile(baitUniprot, baitGene, preyUniprot, preyGene, sourcePath) {
-  // Extract directory name from source_path
-  let directoryName = extractDirectoryFromSourcePath(sourcePath);
-
-  if (!directoryName) {
-    // Try to construct from UniProt IDs
-    directoryName = `${baitUniprot.toLowerCase()}_and_${preyUniprot.toLowerCase()}`;
+  if (!sourcePath) {
+    return null;
   }
 
-  // Try different bait directory patterns
-  const baitPatterns = [];
+  // The source_path points to either:
+  // 1. A JSON file: /path/to/AF3/AF3_PD_analysis_v4.json
+  // 2. A directory: /path/to/AF3/
+  // CIF files are in subdirectories: /path/to/AF3/proteinA_and_proteinB/proteinA_and_proteinB_model.cif
 
-  if (baitGene) {
-    baitPatterns.push(`${baitUniprot}_${baitGene}`);
-    baitPatterns.push(`${baitUniprot}_${baitGene.toUpperCase()}`);
-    baitPatterns.push(`${baitUniprot}_${baitGene.toLowerCase()}`);
+  let sourceDir;
+  if (sourcePath.endsWith('.json')) {
+    sourceDir = dirname(sourcePath);
+  } else {
+    sourceDir = sourcePath;
   }
-  baitPatterns.push(baitUniprot);
 
-  for (const baitDir of baitPatterns) {
-    const baitPath = join(AF3_BASE_DIR, baitDir, 'AF3', directoryName);
+  // Expected directory and CIF filename format
+  const cifBasename = `${baitUniprot.toLowerCase()}_and_${preyUniprot.toLowerCase()}`;
+  const interactionDir = join(sourceDir, cifBasename);
+  const cifPath1 = join(interactionDir, `${cifBasename}_model.cif`);
+  const cifPath2 = join(interactionDir, `${cifBasename}.cif`);
 
-    // Check if directory exists
-    if (await fileExists(baitPath)) {
-      // Look for model.cif file
-      const cifPath1 = join(baitPath, `${directoryName}_model.cif`);
-      const cifPath2 = join(baitPath, `${directoryName.split('_')[0]}_model.cif`);
+  // Try both naming conventions
+  if (await fileExists(cifPath1)) {
+    return {
+      cif_path: cifPath1,
+      source_directory: sourceDir
+    };
+  }
 
-      let cifPath = null;
-      if (await fileExists(cifPath1)) {
-        cifPath = cifPath1;
-      } else if (await fileExists(cifPath2)) {
-        cifPath = cifPath2;
-      } else {
-        // Try to find any *_model.cif file
-        try {
-          const files = await readdir(baitPath);
-          const cifFiles = files.filter(f => f.endsWith('_model.cif'));
-          if (cifFiles.length > 0) {
-            cifPath = join(baitPath, cifFiles[0]);
-          }
-        } catch (e) {
-          continue;
+  if (await fileExists(cifPath2)) {
+    return {
+      cif_path: cifPath2,
+      source_directory: sourceDir
+    };
+  }
+
+  // Try to find any matching subdirectory with CIF files
+  try {
+    const subdirs = await readdir(sourceDir, { withFileTypes: true });
+    const matchingDirs = subdirs.filter(d =>
+      d.isDirectory() &&
+      d.name.includes(baitUniprot.toLowerCase()) &&
+      d.name.includes(preyUniprot.toLowerCase())
+    );
+
+    for (const dir of matchingDirs) {
+      const dirPath = join(sourceDir, dir.name);
+      try {
+        const files = await readdir(dirPath);
+        const cifFiles = files.filter(f => f.endsWith('.cif') || f.endsWith('_model.cif'));
+
+        if (cifFiles.length > 0) {
+          return {
+            cif_path: join(dirPath, cifFiles[0]),
+            source_directory: dirPath
+          };
         }
-      }
-
-      if (cifPath) {
-        return {
-          cif_path: cifPath,
-          bait_directory: baitDir,
-          interaction_directory: directoryName,
-          prediction_directory: baitPath
-        };
+      } catch {
+        continue;
       }
     }
+  } catch (e) {
+    // Directory doesn't exist or can't be read
+    return null;
   }
 
   return null;
@@ -138,15 +128,7 @@ async function main() {
     process.exit(1);
   }
 
-  // Check if AlphaPulldown directory exists
-  if (!await fileExists(AF3_BASE_DIR)) {
-    console.error(`❌ AlphaPulldown base directory not found: ${AF3_BASE_DIR}`);
-    console.error('This script must be run on a machine with access to AlphaFold predictions.');
-    process.exit(1);
-  }
-
   console.log(`📁 Database: ${DB_PATH}`);
-  console.log(`📁 AlphaPulldown: ${AF3_BASE_DIR}`);
   console.log(`📁 Output: ${STRUCTURES_DIR}`);
   console.log();
 
@@ -211,7 +193,7 @@ async function main() {
 
         if (result) {
           // Copy CIF file to structures directory
-          const outputFilename = `${result.interaction_directory}.cif`;
+          const outputFilename = `${inter.bait_uniprot.toLowerCase()}_and_${inter.prey_uniprot.toLowerCase()}.cif`;
           const outputPath = join(STRUCTURES_DIR, outputFilename);
 
           await copyFile(result.cif_path, outputPath);
@@ -227,9 +209,9 @@ async function main() {
             status: 'found',
             cif_path: outputPath,
             original_cif_path: result.cif_path,
-            interaction_directory: result.interaction_directory,
+            interaction_directory: dirname(result.cif_path),
             notes: [],
-            prediction_directory: result.prediction_directory
+            prediction_directory: result.source_directory
           };
 
           manifest.found++;
