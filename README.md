@@ -141,12 +141,56 @@ node db/check_db.mjs
 - `app/api/**/*.ts` - 5 API routes
 - `db/*.mjs` - 37 import scripts
 
-## For the implementer Person: Implementation Guide
+## For Future Claude Session: Implementation Guide
 
-1. **Read the Plan**: Start with `/u/au14762/.claude/plans/serene-honking-zebra.md`
-2. **Follow Phases 1-7**: Step-by-step implementation instructions
-3. **Test Each Phase**: Verify functionality before proceeding
-4. **Document Issues**: Track any problems encountered
+**🤖 Start here if you are Claude implementing the local deployment**
+
+### Quick Start
+1. **Read this file completely** to understand context
+2. **Read `LOCAL_DEPLOYMENT_GUIDE.md`** - Complete step-by-step guide for you
+3. **Read `IMPLEMENTATION_PLAN.md`** - 7-phase technical plan
+4. **Verify what's done**: Database exists, MolStar implemented
+5. **Your task**: Convert PostgreSQL code to SQLite (Phases 1-4, 7)
+
+### Implementation Checklist
+- [ ] Phase 1: Setup and Planning (30 min)
+- [ ] Phase 2: Install SQLite + create database abstraction (15 min)
+- [ ] Phase 3: Update 5 API routes (3-4 hours)
+- [ ] Phase 4: Update 37 import scripts (6-8 hours)
+- [ ] Phase 5: Testing (2-3 hours)
+- [ ] Phase 6: Verify CIF files (already collected, just verify)
+- [ ] Phase 7: Update documentation (1-2 hours)
+
+**Estimated time**: 13-18 hours total
+
+### Key Files to Read
+- `LOCAL_DEPLOYMENT_GUIDE.md` ⭐ **START HERE**
+- `IMPLEMENTATION_PLAN.md` - Technical details
+- `DATABASE_INFO.md` - Database schema
+- `MOLSTAR_IMPLEMENTATION_STATUS.md` - MolStar testing (already done)
+- `SESSION_SUMMARY.md` - What previous session accomplished
+
+### What's Already Complete ✅
+- ✅ SQLite database populated (protoview.db - 1.89 MB)
+- ✅ CIF structure files collected (2,211 files - 1.7 GB)
+- ✅ MolStar 3D viewer implemented (4 components)
+- ✅ All documentation written
+
+### What You Need to Do ❌
+- ❌ Replace `@vercel/postgres` with `better-sqlite3`
+- ❌ Convert PostgreSQL syntax to SQLite in 42 files
+  - 5 API routes in `app/api/`
+  - 37 import scripts in `db/`
+- ❌ Test everything works
+- ❌ Document what you changed
+
+### Success Criteria
+- All API routes work with SQLite
+- Frontend functions identically to cloud version
+- MolStar viewer loads structures
+- Import scripts can add new data
+- No PostgreSQL dependencies remain
+- Production build succeeds
 
 ## Maintenance Strategy
 
