@@ -714,6 +714,7 @@ export default function Home() {
                     <th>ipLDDT</th>
                     <th>AlphaFold</th>
                     <th>Experimental</th>
+                    <th>3D Structure</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -830,6 +831,19 @@ export default function Home() {
                           </OverlayTrigger>
                         ) : (
                           <span className="text-muted">-</span>
+                        )}
+                      </td>
+                      <td className="text-center">
+                        {inter.alphafold_version === 'AF3' ? (
+                          <button
+                            className="btn btn-sm btn-primary"
+                            onClick={() => window.open(`/structure/${inter.id}`, '_blank')}
+                            title="View 3D structure in MolStar"
+                          >
+                            🔬 View 3D
+                          </button>
+                        ) : (
+                          <span className="text-muted" title="3D structures only available for AF3 predictions">-</span>
                         )}
                       </td>
                     </tr>

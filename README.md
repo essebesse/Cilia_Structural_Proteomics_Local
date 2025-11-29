@@ -20,16 +20,18 @@ This is a standalone version of Protoview designed for local deployment. It uses
 
 ## Implementation Status
 
-**STATUS: PLANNED - DATABASE READY**
+**STATUS: DATABASE READY + MOLSTAR IMPLEMENTED**
 
 This repository contains:
 - ✅ Codebase copied from cloud version
 - ✅ **Pre-populated SQLite database** (`protoview.db` - 1.89 MB)
+- ✅ **MolStar 3D structure viewer** (2,211 CIF files - 1.7 GB)
 - ❌ Code migration NOT yet implemented (still uses PostgreSQL syntax)
 
-The database is ready and contains all production data. The implementer needs to implement the code migration (see IMPLEMENTATION_PLAN.md).
+The database is ready and contains all production data. MolStar 3D visualization is fully implemented and ready to test. The implementer needs to implement the code migration (see IMPLEMENTATION_PLAN.md).
 
 **Implementation Plan**: See `IMPLEMENTATION_PLAN.md` for complete implementation details.
+**MolStar Status**: See `MOLSTAR_IMPLEMENTATION_STATUS.md` for testing guide.
 
 ## Planned Implementation (6 Remaining Phases)
 
